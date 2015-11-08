@@ -1,0 +1,27 @@
+{
+  "name": "clawer_aggregate",
+  "version": "1.0.0",
+  "description": "a simple scriptable spider",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ssddi456/clawer_aggregate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ssddi456/clawer_aggregate/issues"
+  },
+  "homepage": "https://github.com/ssddi456/clawer_aggregate",
+  "dependencies":{
+    "request" : "*",
+    "iconv-lite" : "*",
+    "cheerio" : "*",
+    "nedb" : "*",
+    "underscore" : "*",
+    "async" : "*"
+  }
+}
