@@ -17,11 +17,13 @@
   },
   "homepage": "https://github.com/ssddi456/clawer_aggregate",
   "dependencies":{
-    "request" : "*",
-    "iconv-lite" : "*",
-    "cheerio" : "*",
-    "nedb" : "*",
-    "underscore" : "*",
-    "async" : "*"
+    "request" : "~2.51.0",
+    "iconv-lite" : "~0.4.8",
+    "cheerio" : "~0.19.0",
+    "nedb" : "~1.2.1",
+    "underscore" : "~1.8.2",
+    "async" : "~0.9.0",
+    "debug" : "~2.1.1"
   }
 }
+

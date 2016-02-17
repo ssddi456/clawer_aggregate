@@ -1,10 +1,17 @@
+var path    = require('path');
+var debug_name = path.basename(__filename,'.js');
+(require.main === module) && (function(){
+    process.env.DEBUG = '*';
+})()
+var debug = require('debug')(debug_name);
+
+
 var async = require('async');
 var _ = require('underscore');
 var commands = require('./bot_aggregate_operations');
 var nedb = require('nedb');
-var path = require('path');
 
-var context_db;
+
 
 function normalize_operation( operations, context ) {
   return operations.map(function( op, idx ) {
@@ -113,10 +120,10 @@ function update_operations( old_ops, new_ops ) {
 
   var late_finished = true;
   new_ops.forEach(function( op, idx ) {
-    console.log( '-- check step ', idx, late_finished);
+    debug( '-- check step ', idx, late_finished);
     var old_op = old_ops[idx];
 
-    console.log( old_op );
+    debug( old_op );
     // 
     // 如果原本没有这一步， 
     // 或者之前的结果已经不能用
@@ -126,7 +133,7 @@ function update_operations( old_ops, new_ops ) {
       late_finished = false;
       op.res = undefined;
       op.finished = false;
-      console.log('--- no old op ---', idx);
+      debug('--- no old op ---', idx);
       return;
     }
 
@@ -139,7 +146,7 @@ function update_operations( old_ops, new_ops ) {
     // 或者指令内容不同
     // 清除这一步上一次的结果
     // 
-    console.log( 'len the same', op_cmd.length, old_cmd.length);
+    debug( 'len the same', op_cmd.length, old_cmd.length);
 
     if( op_cmd.length != old_cmd.length
       || !op_cmd.every(function( cmd, idx ) {
@@ -164,7 +171,7 @@ function update_operations( old_ops, new_ops ) {
           }
         }
 
-        console.log( 'different', cmd, o_cmd);
+        debug( 'different', cmd, o_cmd);
       })
     ){
       late_finished = false;
@@ -184,10 +191,10 @@ function load_progress( id, context, done ) {
     return done();
   }
 
-  context_db = new nedb({ filename : path.join(__dirname,'../storage/aggregate_progess.db'), autoload: true });
+  context.db = new nedb({ filename : path.join(__dirname,'../storage/aggregate_progess.db'), autoload: true });
 
-  context_db.findOne({ aggregate_id : id },function( err, doc ) {
-    console.log( arguments );
+  context.db.findOne({ aggregate_id : id },function( err, doc ) {
+    debug( arguments );
     if( err ){
       debug('aggregate id', id, 'no record');
       done();
@@ -202,7 +209,7 @@ function load_progress( id, context, done ) {
 
 function dump_progress( id, context, done ) {
   var debug = context.debug;
-  if(!context_db){
+  if(!context.db){
     debug('aggregate with no id');
     return done();
   }
@@ -219,7 +226,7 @@ function dump_progress( id, context, done ) {
     return n;
   });
 
-  context_db.update(
+  context.db.update(
     { aggregate_id : id },
     { $set : { operation : operations }},
     { upsert : 1 },
@@ -243,19 +250,9 @@ module.exports =  function( operation, options, done ) {
   }
 
 
-  var debug
-  if( options.debug ){
-    debug = function() {
-      console.log.apply(console, [].slice.call(arguments));
-    };
-  } else {
-    debug = function(){};
-  }
-
   debug('options', options);
 
   var context = {
-    debug   : debug,
     options : options,
     cache   : undefined
   };
@@ -265,8 +262,8 @@ module.exports =  function( operation, options, done ) {
 
   process.on("uncaughtException",function(e) {
     // and kill also should be here
-    console.log( e );
-    console.log( e.stack );
+    debug( e );
+    debug( e.stack );
     dump_progress(options.opid, context, function() {
       process.exit();
     });
@@ -330,7 +327,7 @@ module.exports =  function( operation, options, done ) {
           }
         });
 
-        console.log('do command', command, idx);
+        debug('do command', command, idx);
 
         d.run(function(){
           commands[command].apply(null, params);
@@ -339,8 +336,8 @@ module.exports =  function( operation, options, done ) {
       },1);
 
       d.on('error',function(e) {
-        console.log( e.message );
-        console.log( e.stack );
+        debug( e.message );
+        debug( e.stack );
         q.kill();
         done(e, context.cache);
       });

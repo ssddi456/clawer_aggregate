@@ -21,6 +21,7 @@ var request_queue = module.exports = function( req, options ) {
       }, options.interval);
 
       args.push(done);
+
       req.apply(req, args);
     }
 

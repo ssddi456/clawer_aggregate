@@ -1,4 +1,4 @@
-var req = require('./req');
+var req = require('request');
 var cheerio = require('cheerio');
 var iconvLite = require('iconv-lite');
 

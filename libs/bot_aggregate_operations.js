@@ -1,5 +1,11 @@
+var path    = require('path');
+var debug_name = path.basename(__filename,'.js');
+(require.main === module) && (function(){
+    process.env.DEBUG = '*';
+})()
+var debug = require('debug')(debug_name);
+
 var async = require('async');
-var path = require('path');
 var url = require('url');
 var fs = require('fs');
 var _ = require('underscore');
@@ -25,9 +31,6 @@ module.exports = {
    */
   'grep'   : function( done, context, urls, url_key, unpack_options ) {
     var options = context.options;
-    var debug = context.debug;
-
-
 
     debug( 'arguments.length', arguments.length );
     debug( 'urls', urls );
@@ -53,7 +56,7 @@ module.exports = {
 
       var host = url.parse(page_url).host;
 
-      async.retry(3, function(done) {
+      async.retry(options.net, function(done) {
 
         download
           .get_queue(page_url, options.concurrency && options.concurrency[host] )
@@ -228,7 +231,7 @@ module.exports = {
             done(null, obj);
           }
         }
-      }, options.net);
+      });
     },done);
   },
   /**
