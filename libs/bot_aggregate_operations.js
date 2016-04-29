@@ -150,7 +150,7 @@ module.exports = {
 
               if( unpack_options['$context'] ){
                 var $context = $(unpack_options['$context']);
-                console.log( $context.length );
+                debug( $context.length );
                 if( !$context.length ){
                   debug('$context not found', unpack_options['$context'] );
                   done( new Error('$context not found') );
@@ -210,10 +210,16 @@ module.exports = {
                   }
 
                   if( accessor ){
+                    if( type == 'attr' ){
+                      obj[key] = $context.attr(selector[1]);                                              
+                      return;
+                    }
+
+                    debug($context, $context.length);
                     var els = $context ? $context.eq(idx).find(selector[1]) : $(selector[1]);
                     if( !els.length ){
                       debug('element not found');
-                      debug( content );
+                      // debug( content );
                     } else {
                       els.each(function() {
                         res.push(accessor(this));

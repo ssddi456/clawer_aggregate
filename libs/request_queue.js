@@ -4,11 +4,15 @@ var url = require('url');
 
 var request_queue = module.exports = function( req, options ) {
 
-  options = options || {};
-  options = util._extend({
-    count    : 5,
-    interval : 10e3
-  }, options);
+  if( options === 0  ){
+    options = { count : Infinity };
+  } else {
+    options = options || {};
+    options = util._extend({
+      count    : 5,
+      interval : 10e3
+    }, options);
+  }
 
   var counter = 0;
 

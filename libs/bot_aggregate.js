@@ -187,7 +187,7 @@ function update_operations( old_ops, new_ops ) {
 function load_progress( id, context, done ) {
   var debug = context.debug;
   if(!id){
-    debug('aggregate with no id');
+    debug('load_progress','aggregate with no db, continue');
     return done();
   }
 
@@ -210,7 +210,7 @@ function load_progress( id, context, done ) {
 function dump_progress( id, context, done ) {
   var debug = context.debug;
   if(!context.db){
-    debug('aggregate with no id');
+    debug('dump_progress', 'aggregate with no db, continue');
     return done();
   }
 
@@ -254,7 +254,8 @@ module.exports =  function( operation, options, done ) {
 
   var context = {
     options : options,
-    cache   : undefined
+    cache   : undefined,
+    debug   : debug
   };
 
   operation = normalize_operation(operation, context);
@@ -356,6 +357,7 @@ module.exports =  function( operation, options, done ) {
       var done = args.pop();
       args.unshift(null);
 
+      debug('finish, do dump');
       dump_progress( options.opid, context, function() {
         done.apply(null, args);
       });
