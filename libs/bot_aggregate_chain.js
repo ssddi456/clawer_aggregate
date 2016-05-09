@@ -9,6 +9,8 @@ function slice ( arrlike ) {
   return Array.prototype.slice.call(arrlike);
 }
 
+var util = require('util');
+
 var bot_aggregate_chain = module.exports = function( options ) {
   if( arguments > 1 ){
     return bot_aggregate.apply(null, slice(arguments));
@@ -22,6 +24,12 @@ var bot_aggregate_chain = module.exports = function( options ) {
   self.operations = [];
   self.inited = false;
   options = options || {};
+
+  options.net = util._extend({
+                  times: 3, 
+                  interval: 200
+                }, 
+                options.net || {});
 
   operations.forEach(function( op ) {
     self[op] = function() {

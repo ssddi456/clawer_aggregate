@@ -40,6 +40,12 @@ module.exports = {
     var n = 0;
     var len = urls.length;
 
+    var encoding;
+    if( unpack_options.charset && typeof unpack_options.charset[0] == 'string'){
+      encoding = unpack_options.charset[0];
+      delete unpack_options.charset;
+    }
+
     async.mapLimit(urls,5,function( obj, done ) {
       var page_url;
 
@@ -60,9 +66,9 @@ module.exports = {
 
         download
           .get_queue(page_url, options.concurrency && options.concurrency[host] )
-          .req(page_url, options.net, function(err, $, content){
+          .req(page_url, encoding, options.net, function(err, $, content, buffer){
             debug( content );
-            done(err, [$,content]);
+            done(err, [$,content, buffer]);
 
           });
 
@@ -72,6 +78,8 @@ module.exports = {
         } else {
           var $ = res[0];
           var content = res[1];
+          var buffer = res[2];
+
           if( typeof unpack_options == 'function' ){
             unpack_options( $, content, function( err, res ) {
               if( err ){
@@ -103,6 +111,10 @@ module.exports = {
                 var res = [];
 
                 switch(type){
+                  case 'buffer' : 
+                    obj[key] = buffer;
+                  return;
+
                   case 'content' :
                     obj[key] = content;
                   return;
@@ -215,7 +227,8 @@ module.exports = {
                       return;
                     }
 
-                    debug($context, $context.length);
+                    debug($context, $context && $context.length);
+
                     var els = $context ? $context.eq(idx).find(selector[1]) : $(selector[1]);
                     if( !els.length ){
                       debug('element not found');

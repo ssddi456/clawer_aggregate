@@ -1,6 +1,7 @@
 var req = require('request');
 var cheerio = require('cheerio');
 var iconvLite = require('iconv-lite');
+var zlib = require('zlib');
 
 module.exports = function( url, encode, option, done  ) {
   if( typeof encode == 'function' ){
@@ -15,7 +16,7 @@ module.exports = function( url, encode, option, done  ) {
       option = {}
     }
     else {
-      option = encode;
+      option = encode || {};
       encode = undefined;
     }
   }
@@ -34,6 +35,12 @@ module.exports = function( url, encode, option, done  ) {
 
   r.on('end',function() {
     buffer = Buffer.concat(buffer);
+
+    var res_headers =  r.response.headers;
+    if( res_headers['content-encoding'] == 'gzip'){
+      buffer = zlib.gunzipSync(buffer);
+    }
+
     var $ = cheerio.load(buffer);
     var declared_charset = ''
     var charset_node = $('meta[charset]');
@@ -58,7 +65,7 @@ module.exports = function( url, encode, option, done  ) {
       // console.log( encode, declared_charset );
     }
 
-    once( null, $, buffer.toString());
+    once( null, $, buffer.toString(), buffer);
   });
 
   r.on('error',function(e) {
