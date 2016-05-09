@@ -288,6 +288,10 @@ module.exports = {
     }
     done(null, res);
   },
+
+  'slice': function(done, context, res, start, end) {
+    done(null, res.slice.call(res, start, end));
+  },
   /**
    * 过滤
    */
