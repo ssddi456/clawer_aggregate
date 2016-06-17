@@ -47,7 +47,7 @@ function normalize_operation( operations, context ) {
         if( typeof unpack_options == 'function' ){
 
         } else{
-          var text_commands = ['json','jsonp'];
+          var text_commands = ['json','jsonp', 'content'];
 
           var commands = _.map(unpack_options,function( selector, k ) {
             if( k[0] == '$' ){
