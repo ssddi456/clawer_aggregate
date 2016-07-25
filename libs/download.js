@@ -3,7 +3,8 @@ var cheerio = require('cheerio');
 var iconvLite = require('iconv-lite');
 var zlib = require('zlib');
 
-module.exports = function( url, encode, option, done  ) {
+
+var download = function( url, encode, option, done  ) {
   if( typeof encode == 'function' ){
     done = encode;
     option = {};
@@ -71,4 +72,7 @@ module.exports = function( url, encode, option, done  ) {
   r.on('error',function(e) {
     once(e);
   });
-}
+};
+
+var request_queue = require('./request_queue');
+module.exports = request_queue(download);

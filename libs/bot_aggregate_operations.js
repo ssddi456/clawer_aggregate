@@ -13,8 +13,6 @@ var unwind = require('./unwind');
 var util = require('util');
 
 var download = require('./download');
-var request_queue = require('./request_queue');
-download = request_queue(download);
 
 
 function get_ref( key, obj) {
