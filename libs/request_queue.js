@@ -2,7 +2,10 @@ var async = require('async');
 var util = require('util');
 var url = require('url');
 
+var instance_id = 0;
+
 var request_queue = module.exports = function( req, options ) {
+  var this_instanc_id = ++instance_id;
 
   if( options === 0  ){
     options = { count : Infinity };
@@ -13,6 +16,7 @@ var request_queue = module.exports = function( req, options ) {
       interval : 10e3
     }, options);
   }
+
 
   var counter = 0;
 
@@ -57,7 +61,7 @@ var request_queue = module.exports = function( req, options ) {
       var domain = req_url.host;
 
       if( !(domain in queue_map) ){
-        queue_map[domain] = request_queue( req, opt || options);
+        queue_map[domain] = request_queue( req, opt === undefined ? options : opt );
       }
 
       return queue_map[domain];

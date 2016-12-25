@@ -1,6 +1,6 @@
 {
   "name": "clawer_aggregate",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "a simple scriptable spider",
   "main": "index.js",
   "scripts": {

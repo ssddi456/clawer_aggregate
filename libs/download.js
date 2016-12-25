@@ -21,7 +21,7 @@ var download = function( url, encode, option, done  ) {
       encode = undefined;
     }
   }
-
+  
   var buffer = [];
   var r = req(url, option);
 
