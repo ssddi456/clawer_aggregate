@@ -166,7 +166,7 @@ module.exports = {
                   done( new Error('$context not found') );
                 }
                 var ret = [];
-                $context.each(function() {
+                $context.each(function( idx ) {
                   ret.push( util._extend({}, obj));
                 });
                 obj = ret;
@@ -204,12 +204,15 @@ module.exports = {
                         return $(node).html();
                       };
                     break;
+
                     case 'href':
                     case 'src':
                       accessor = function(node) {
                         var link = $(node).attr(type) || '';
                         return url.resolve(page_url,link);
                       };
+                    break;
+
                     default :
                       if( type.indexOf('attr') == 0 ){
                         type = type.replace('attr:','');
@@ -220,14 +223,27 @@ module.exports = {
                   }
 
                   if( accessor ){
+                    debug($context, $context && $context.length);
+
                     if( type == 'attr' ){
-                      obj[key] = $context.attr(selector[1]);                                              
+                      obj[key] = $context.eq(idx).attr(selector[1]);
                       return;
                     }
 
-                    debug($context, $context && $context.length);
+                    var els;
+                    if( $context ){
+                      els = $context.eq(idx);
+                      if( selector[1] ){
+                        els = els.find(selector[1]);
+                      }
+                    } else {
+                      if( selector[1] ){
+                        els = $(selector[1]);
+                      } else {
+                        els = $('*');
+                      }
+                    }
 
-                    var els = $context ? $context.eq(idx).find(selector[1]) : $(selector[1]);
                     if( !els.length ){
                       debug('element not found');
                       // debug( content );

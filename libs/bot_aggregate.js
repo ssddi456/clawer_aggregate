@@ -25,6 +25,7 @@ function normalize_operation( operations, context ) {
         if( idx == 0 ){
           if( !unpack_options ){
             unpack_options = urlkey;
+            urlkey = '$url';
           }
 
           if( !Array.isArray(urls) ){
