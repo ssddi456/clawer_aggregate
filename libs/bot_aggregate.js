@@ -313,7 +313,6 @@ module.exports =  function( operation, options, done ) {
             debug( err.message );
             debug( err.stack );
             throw new Error('no res');
-            done();
           } else {
             //
             // 缓存这一步的结果以备重试
