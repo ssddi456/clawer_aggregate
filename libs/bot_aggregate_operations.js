@@ -65,7 +65,7 @@ module.exports = {
         download
           .get_queue(page_url, options.concurrency && options.concurrency[host] )
           .req(page_url, encoding, options.net, function(err, $, content, buffer){
-            debug( content );
+            debug( 'downloaded content', content );
             done(err, [$,content, buffer]);
 
           });
@@ -160,7 +160,7 @@ module.exports = {
 
               if( unpack_options['$context'] ){
                 var $context = $(unpack_options['$context']);
-                debug( $context.length );
+                debug( 'context element count', $context.length );
                 if( !$context.length ){
                   debug('$context not found', unpack_options['$context'] );
                   done( new Error('$context not found') );
@@ -223,7 +223,7 @@ module.exports = {
                   }
 
                   if( accessor ){
-                    debug($context, $context && $context.length);
+                    debug( 'context element info', $context, $context && $context.length);
 
                     if( type == 'attr' ){
                       obj[key] = $context.eq(idx).attr(selector[1]);

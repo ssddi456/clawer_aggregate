@@ -124,7 +124,7 @@ function update_operations( old_ops, new_ops ) {
     debug( '-- check step ', idx, late_finished);
     var old_op = old_ops[idx];
 
-    debug( old_op );
+    debug( 'old_op', old_op );
     // 
     // 如果原本没有这一步， 
     // 或者之前的结果已经不能用
@@ -195,7 +195,7 @@ function load_progress( id, context, done ) {
   context.db = new nedb({ filename : path.join(__dirname,'../storage/aggregate_progess.db'), autoload: true });
 
   context.db.findOne({ aggregate_id : id },function( err, doc ) {
-    debug( arguments );
+    debug( 'load records', arguments );
     if( err ){
       debug('aggregate id', id, 'no record');
       done();
@@ -264,7 +264,7 @@ module.exports =  function( operation, options, done ) {
 
   process.on("uncaughtException",function(e) {
     // and kill also should be here
-    debug( e );
+    debug('uncaughtException', e );
     debug( e.stack );
     dump_progress(options.opid, context, function() {
       process.exit();
@@ -284,7 +284,7 @@ module.exports =  function( operation, options, done ) {
     function( done ) {
 
       operation.forEach(function( step ) {
-        debug(step.operation, step.finished);
+        debug('progress info', step.operation, step.finished);
       });
 
       var d = require('domain').create();

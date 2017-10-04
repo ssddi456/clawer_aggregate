@@ -1,7 +1,7 @@
 {
   "license": "ISC", 
   "name": "clawer_aggregate", 
-  "version": "1.0.4",
+  "version": "1.0.5",
   "repository": {
     "url": "https://github.com/ssddi456/clawer_aggregate.git", 
     "type": "git"

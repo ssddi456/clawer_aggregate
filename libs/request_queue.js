@@ -17,7 +17,7 @@ var request_queue = module.exports = function( req, options ) {
     }, options);
   }
 
-
+  // so this should be the bucket
   var counter = 0;
 
   var q = async.queue(function( task, done) {
