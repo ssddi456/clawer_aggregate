@@ -39,7 +39,7 @@ aggregate([aggregate pipeline], options, callback );
   debug : boolean        // print debug info
   net   : {
     times: 5,            // async.retry
-    interval: 0          // async.retry
+    interval: 0,
     [request options]
   },
   concurrency : {
