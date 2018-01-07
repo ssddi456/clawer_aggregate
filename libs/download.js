@@ -6,11 +6,11 @@ var zlib = require('zlib');
 var hangups = [];
 
 
-function logQueueStatus() {
-  console.log('download hangups', hangups);
-  setTimeout(logQueueStatus, 10e3);
-}
-setTimeout(logQueueStatus, 10e3);
+// function logQueueStatus() {
+//   console.log('download hangups', hangups);
+//   setTimeout(logQueueStatus, 10e3);
+// }
+// setTimeout(logQueueStatus, 10e3);
 
 
 var download = function(url, encode, option, done) {
