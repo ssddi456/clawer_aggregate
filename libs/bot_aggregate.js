@@ -287,7 +287,6 @@ module.exports =  function( operation, options, done ) {
         debug('progress info', step.operation, step.finished);
       });
 
-      var d = require('domain').create();
       var q = async.queue(function( step, done ) {
         var idx = step.idx;
         var operation = step.operation;
@@ -306,12 +305,19 @@ module.exports =  function( operation, options, done ) {
           context.cache = null;
         }
 
+        var d = require('domain').create();
+
+        var safe_done = function() {
+            d.exit();
+            done.apply(null, arguments);
+        }
         params.unshift(context);
 
         params.unshift(function( err, res) {
           if( err ){
             debug( err.message );
             debug( err.stack );
+            console.log( err.message, err.stack );
             throw new Error('no res');
           } else {
             //
@@ -324,27 +330,27 @@ module.exports =  function( operation, options, done ) {
             step.res = JSON.stringify(res);
             context.cache = res;
             debug( res );
-            done();
+            safe_done();
           }
         });
 
         debug('do command', command, idx);
-
+  
         d.run(function(){
           commands[command].apply(null, params);
+        });
+        d.on('error',function(e) {
+          debug( e.message );
+          debug( e.stack );
+          console.log( e.message, e.stack );
+          q.kill();
+          safe_done(e, context.cache);
         });
 
       },1);
 
-      d.on('error',function(e) {
-        debug( e.message );
-        debug( e.stack );
-        q.kill();
-        done(e, context.cache);
-      });
 
       q.drain = function(){
-        d.exit();
         done(null, context.cache);
       };
 

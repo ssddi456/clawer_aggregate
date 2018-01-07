@@ -57,12 +57,12 @@ var request_queue = module.exports = function( req, options, domain ) {
     }
   },5);
 
-  function logQueueStatus () {
-    console.log('request_queue', domain, 'started', q.started, 'paused', q.paused, 'length', q.length(), 'runningTask', runningTask, 'counter', counter);
-    console.log('hangups', hangups);
-    setTimeout(logQueueStatus, 10e3);
-  }
-  setTimeout(logQueueStatus, 10e3);
+  // function logQueueStatus () {
+  //   console.log('request_queue', domain, 'started', q.started, 'paused', q.paused, 'length', q.length(), 'runningTask', runningTask, 'counter', counter);
+  //   console.log('hangups', hangups);
+  //   setTimeout(logQueueStatus, 10e3);
+  // }
+  // setTimeout(logQueueStatus, 10e3);
 
   return {
     req : function() {
