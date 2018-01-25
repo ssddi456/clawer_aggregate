@@ -63,7 +63,7 @@ module.exports = {
       async.retry(options.net, function(done) {
 
         download
-          .get_queue(page_url, options.concurrency && options.concurrency[host] )
+          .get_queue(page_url, options.concurrency && (options.concurrency[host] || options.concurrency))
           .req(page_url, encoding, options.net, function(err, $, content, buffer){
             debug( 'downloaded content', content );
             done(err, [$,content, buffer]);
