@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" v-cloak></div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.6.8/vue.js"></script>
+    <script src="https://cdn.staticfile.org/require.js/2.1.15/require.js"></script>
+    <script>
+        define('vue', function () {
+            return window.Vue;
+        });
+        require.config({
+            paths: {
+                'underscore': 'https://cdn.staticfile.org/underscore.js/1.6.0/underscore',
+                ace: ['//cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/'],
+            }
+        });
+        require(['index'], function () {
+
+        });
+    </script>
+    </script>
+</body>
+
+</html>

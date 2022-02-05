@@ -107,7 +107,6 @@ function normalize_operation( operations, context ) {
           op = ['grep', urlkey, unpack_options];
         }
         return { operation : op, idx : idx, finished : false };
-        break;
       default:
         return { operation : op, idx : idx, finished : false };
     }
@@ -233,6 +232,14 @@ function dump_progress( id, context, done ) {
     { upsert : 1 },
     done);
 }
+/*
+  
+  ops1  streaming
+  ops2  streaming
+  ops3  block
+  ops4  streaming
+
+ */
 
 module.exports =  function( operation, options, done ) {
   /*
